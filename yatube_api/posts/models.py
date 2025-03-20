@@ -4,6 +4,7 @@ from django.db import models
 User = get_user_model()
 
 
+# Группы для постов
 class Group(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=50, unique=True)
@@ -13,6 +14,7 @@ class Group(models.Model):
         return self.title
 
 
+# Посты с текстом и автором
 class Post(models.Model):
     text = models.TextField()
     pub_date = models.DateTimeField('Дата публикации', auto_now_add=True)
@@ -28,6 +30,7 @@ class Post(models.Model):
         return self.text
 
 
+# Комментарии к постам
 class Comment(models.Model):
     author = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='comments')
@@ -38,6 +41,7 @@ class Comment(models.Model):
         'Дата добавления', auto_now_add=True, db_index=True)
 
 
+# Подписки пользователей
 class Follow(models.Model):
     user = models.ForeignKey(
         User,
