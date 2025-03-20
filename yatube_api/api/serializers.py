@@ -3,7 +3,9 @@ from rest_framework import serializers, validators
 from rest_framework.relations import SlugRelatedField
 from posts.models import Comment, Post, Group, Follow
 
+# Файл содержит классы сериализаторов для работы с моделями приложения.
 
+# Сериализатор для модели Post, включает поле автора (username).
 class PostSerializer(serializers.ModelSerializer):
     author = SlugRelatedField(slug_field='username', read_only=True)
 
@@ -11,7 +13,7 @@ class PostSerializer(serializers.ModelSerializer):
         fields = '__all__'
         model = Post
 
-
+# Сериализатор для модели Comment, включает поля автора (username) и привязку к посту.
 class CommentSerializer(serializers.ModelSerializer):
     author = serializers.SlugRelatedField(
         read_only=True, slug_field='username'
@@ -22,14 +24,14 @@ class CommentSerializer(serializers.ModelSerializer):
         read_only_fields = ('post',)
         model = Comment
 
-
+# Сериализатор для модели Group, все поля доступны только для чтения.
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
         fields = ('id', 'title', 'slug', 'description')
         read_only_fields = ('id', 'title', 'slug', 'description')
 
-
+# Сериализатор для модели Follow, обеспечивает уникальность подписок и запрещает подписку на самого себя.
 class FollowSerializer(serializers.ModelSerializer):
     user = serializers.SlugRelatedField(
         slug_field='username',
