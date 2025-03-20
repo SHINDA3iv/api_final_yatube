@@ -10,15 +10,18 @@ from .serializers import (
 from .permissions import OwnershipPermission
 
 
+# Базовый класс для прав доступа
 class PermissionViewset(viewsets.ModelViewSet):
     permission_classes = (OwnershipPermission,)
 
 
+# Только чтение групп
 class GroupViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
 
 
+# Посты с пагинацией
 class PostViewSet(PermissionViewset):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
@@ -30,6 +33,7 @@ class PostViewSet(PermissionViewset):
         )
 
 
+# Комментарии к постам
 class CommentViewSet(PermissionViewset):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
@@ -50,6 +54,7 @@ class CommentViewSet(PermissionViewset):
         )
 
 
+# Подписки пользователей
 class FollowViewSet(
     viewsets.GenericViewSet,
     mixins.CreateModelMixin,
