@@ -2,7 +2,7 @@ from rest_framework import permissions
 
 
 # Проверка прав доступа
-class OwnershipPermission(permissions.BasePermission):
+class IsAuthorOrReadOnlyPermission(permissions.BasePermission):
 
     # Разрешение на уровне запроса
     def has_permission(self, request, view):

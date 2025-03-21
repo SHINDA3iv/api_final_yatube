@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.db.models import UniqueConstraint
 
 User = get_user_model()
 
@@ -29,6 +30,9 @@ class Post(models.Model):
     def __str__(self):
         return self.text
 
+    class Meta:
+        ordering = ['-pub_date']  # Сортировка по убыванию даты публикации
+
 
 # Комментарии к постам
 class Comment(models.Model):
@@ -51,3 +55,12 @@ class Follow(models.Model):
         User,
         on_delete=models.CASCADE,
         related_name='following')
+
+    class Meta:
+        constraints = [
+            UniqueConstraint(
+                fields=['user', 'following'],
+                name='unique_follow'
+            )
+        ]
+
